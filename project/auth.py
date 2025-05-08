@@ -19,7 +19,7 @@ def login_post():
     user = db.session.execute(
     text("SELECT * FROM user WHERE email = :email"),
     {"email": email}
-
+).fetchone()
     # check if the user actually exists
     # take the user-supplied password and compare it with the stored password
     if not user or not (user.password == password):

@@ -39,9 +39,9 @@ def signup():
 def signup_post():
     email = request.form.get('email')
     name = request.form.get('name')
-    password = request.form.get('password')
+    password = request.form.get('password')        #https://www.w3schools.com/php/php_mysql_prepared_statements.asp#:~:text=Bound%20parameters%20minimize%20bandwidth%20to,need%20not%20be%20correctly%20escaped.
 
-    user = User.query.filter_by(email=email).first()
+    user = User.query.filter_by(email=email).first()         # The fixed code protects against SQL injection by replacing the unsafe string concatenation in the SQL query with SQLAlchemy's ORM method filter_by(email=email), which internally uses parameter binding. This means the user-provided email is passed to the database as a separate parameter, not directly embedded in the SQL string. As a result, even if an attacker tries to input malicious SQL code (e.g., test@example.com" OR "1"="1), it will be treated as a plain string rather than executable SQL. This approach eliminates the risk of altering the query logic through user input and ensures that only a valid email match is checked.
     if len(user) > 0: # if a user is found, we want to redirect back to signup page so user can try again
         flash('Email address already exists')  # 'flash' function stores a message accessible in the template code.
         app.logger.debug("User email already exists")
